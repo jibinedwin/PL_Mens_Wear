@@ -53,6 +53,8 @@ function initPreloader() {
         }
 
         // Start music AFTER preloader finishes
+        // (attempts playback immediately; if the browser blocks autoplay,
+        // audio.js silently retries on the first real user gesture)
         if (typeof startSiteMusic === 'function') {
             startSiteMusic();
         }
