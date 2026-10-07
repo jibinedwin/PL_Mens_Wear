@@ -7,66 +7,61 @@ const musicToggle = document.getElementById("musicToggle");
 const musicIcon = document.getElementById("musicIcon");
 
 siteMusic.volume = 0.5;
-let musicIntentionallyStarted = false;
+/*
+ * Real user-gesture events only.
+ * Browsers (Chrome / Safari / Firefox) allow audible playback only after an
+ * ACTUAL user gesture — synthetic/programmatic clicks do not count,
+ * and neither do scroll or mousemove.
+ */
+const MUSIC_ACTIVATION_EVENTS = ["pointerdown", "touchstart", "click", "keydown"];
 
-// Invisible interaction listeners to unlock audio element for iOS Safari
-let audioUnlocked = false;
-const unlockAudio = () => {
-    if (!audioUnlocked) {
-        audioUnlocked = true;
-        
-        // Temporarily play and pause to unlock the audio context
-        if (siteMusic.paused && !musicIntentionallyStarted) {
-            const p = siteMusic.play();
-            if (p !== undefined) {
-                p.then(() => {
-                    if (!musicIntentionallyStarted) {
-                        siteMusic.pause();
-                        siteMusic.currentTime = 0;
-                    }
-                }).catch(() => {});
-            }
-        }
-        
-        document.removeEventListener("click", unlockAudio);
-        document.removeEventListener("touchstart", unlockAudio);
-    }
-};
-document.addEventListener("click", unlockAudio, { once: true });
-document.addEventListener("touchstart", unlockAudio, { once: true });
+let musicStartRequested = false;
+
+function removeMusicActivationListeners(handler) {
+    MUSIC_ACTIVATION_EVENTS.forEach((evt) => {
+        window.removeEventListener(evt, handler);
+    });
+}
+
+
 
 /* =========================================
    START MUSIC AFTER PRELOADER
 ========================================= */
 
 function startSiteMusic() {
-    musicIntentionallyStarted = true;
-    siteMusic.currentTime = 0;
+    if (musicStartRequested) return;
+    musicStartRequested = true;
 
-    const playPromise = siteMusic.play();
+    const tryPlay = () => {
+        siteMusic.muted = false;
+        siteMusic.volume = 0.5;
+        siteMusic.currentTime = 0;
+        const playPromise = siteMusic.play();
 
-    if (playPromise !== undefined) {
+        if (playPromise !== undefined) {
+            playPromise
+                .then(() => {
+                    // Music started — stop listening for retries
+                    removeMusicActivationListeners(tryPlay);
+                })
+                .catch(() => {
+                    // Browser blocked autoplay (no user gesture yet).
+                    // Stay silent and retry on the first real interaction.
+                    musicToggle.classList.remove("playing");
+                    musicIcon.textContent = "🔇";
+                });
+        }
+    };
 
-        playPromise
-            .then(() => {
+    // Attempt 1: starts immediately when the browser allows it
+    // (returning visitor, or the user already interacted with this page).
+    tryPlay();
 
-                // Music successfully started
-                musicToggle.classList.add("playing");
-                musicIcon.textContent = "♫";
-
-            })
-            .catch(() => {
-
-                // Browser blocked autoplay
-                musicToggle.classList.remove("playing");
-                musicIcon.textContent = "🔇";
-
-                console.log(
-                    "Browser blocked automatic audio playback."
-                );
-
-            });
-    }
+    // Attempt 2+: retry silently on the first REAL user gesture until allowed.
+    MUSIC_ACTIVATION_EVENTS.forEach((evt) => {
+        window.addEventListener(evt, tryPlay);
+    });
 }
 
 
