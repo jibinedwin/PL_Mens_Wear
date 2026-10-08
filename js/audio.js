@@ -7,61 +7,67 @@ const musicToggle = document.getElementById("musicToggle");
 const musicIcon = document.getElementById("musicIcon");
 
 siteMusic.volume = 0.5;
-/*
- * Real user-gesture events only.
- * Browsers (Chrome / Safari / Firefox) allow audible playback only after an
- * ACTUAL user gesture — synthetic/programmatic clicks do not count,
- * and neither do scroll or mousemove.
- */
-const MUSIC_ACTIVATION_EVENTS = ["pointerdown", "touchstart", "click", "keydown"];
-
-let musicStartRequested = false;
-
-function removeMusicActivationListeners(handler) {
-    MUSIC_ACTIVATION_EVENTS.forEach((evt) => {
-        window.removeEventListener(evt, handler);
-    });
-}
-
 
 
 /* =========================================
-   START MUSIC AFTER PRELOADER
+   TRY TO START MUSIC AUTOMATICALLY
 ========================================= */
 
 function startSiteMusic() {
-    if (musicStartRequested) return;
-    musicStartRequested = true;
 
-    const tryPlay = () => {
-        siteMusic.muted = false;
-        siteMusic.volume = 0.5;
-        siteMusic.currentTime = 0;
-        const playPromise = siteMusic.play();
+    siteMusic.currentTime = 0;
 
-        if (playPromise !== undefined) {
-            playPromise
-                .then(() => {
-                    // Music started — stop listening for retries
-                    removeMusicActivationListeners(tryPlay);
-                })
-                .catch(() => {
-                    // Browser blocked autoplay (no user gesture yet).
-                    // Stay silent and retry on the first real interaction.
-                    musicToggle.classList.remove("playing");
-                    musicIcon.textContent = "🔇";
-                });
-        }
-    };
+    const playPromise = siteMusic.play();
 
-    // Attempt 1: starts immediately when the browser allows it
-    // (returning visitor, or the user already interacted with this page).
-    tryPlay();
+    if (playPromise !== undefined) {
 
-    // Attempt 2+: retry silently on the first REAL user gesture until allowed.
-    MUSIC_ACTIVATION_EVENTS.forEach((evt) => {
-        window.addEventListener(evt, tryPlay);
-    });
+        playPromise
+            .then(() => {
+
+                // Music started successfully
+                musicToggle.classList.add("playing");
+                musicIcon.textContent = "♫";
+
+                console.log("Background music started.");
+
+            })
+            .catch(() => {
+
+                // Browser blocked autoplay
+                musicToggle.classList.remove("playing");
+                musicIcon.textContent = "🔇";
+
+                console.log(
+                    "Autoplay was blocked. Waiting for user interaction."
+                );
+
+            });
+    }
+}
+
+
+/* =========================================
+   START MUSIC AFTER FIRST USER INTERACTION
+========================================= */
+
+function enableMusicAfterInteraction() {
+
+    if (siteMusic.paused) {
+
+        siteMusic.play()
+            .then(() => {
+
+                musicToggle.classList.add("playing");
+                musicIcon.textContent = "♫";
+
+            })
+            .catch(() => {});
+
+    }
+
+    document.removeEventListener("click", enableMusicAfterInteraction);
+    document.removeEventListener("touchstart", enableMusicAfterInteraction);
+    document.removeEventListener("keydown", enableMusicAfterInteraction);
 }
 
 
@@ -69,7 +75,7 @@ function startSiteMusic() {
    MUSIC ON / OFF
 ========================================= */
 
-musicToggle.addEventListener("click", async () => {
+musicToggle.addEventListener("click", async function () {
 
     if (siteMusic.paused) {
 
@@ -82,7 +88,7 @@ musicToggle.addEventListener("click", async () => {
 
         } catch (error) {
 
-            console.log("Unable to play music.");
+            console.log("Unable to play music:", error);
 
         }
 
@@ -102,7 +108,7 @@ musicToggle.addEventListener("click", async () => {
    KEEP BUTTON STATE CORRECT
 ========================================= */
 
-siteMusic.addEventListener("play", () => {
+siteMusic.addEventListener("play", function () {
 
     musicToggle.classList.add("playing");
     musicIcon.textContent = "♫";
@@ -110,9 +116,43 @@ siteMusic.addEventListener("play", () => {
 });
 
 
-siteMusic.addEventListener("pause", () => {
+siteMusic.addEventListener("pause", function () {
 
     musicToggle.classList.remove("playing");
     musicIcon.textContent = "🔇";
 
 });
+
+
+/* =========================================
+   TRY AUTOPLAY
+========================================= */
+
+window.addEventListener("load", function () {
+
+    startSiteMusic();
+
+});
+
+
+/* =========================================
+   FALLBACK FOR BROWSER AUTOPLAY BLOCK
+========================================= */
+
+document.addEventListener(
+    "click",
+    enableMusicAfterInteraction,
+    { once: true }
+);
+
+document.addEventListener(
+    "touchstart",
+    enableMusicAfterInteraction,
+    { once: true }
+);
+
+document.addEventListener(
+    "keydown",
+    enableMusicAfterInteraction,
+    { once: true }
+);

@@ -90,7 +90,7 @@
     el.textContent = message;
     el.classList.add('is-visible');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () { el.classList.remove('is-visible'); }, 2600);
+    toastTimer = setTimeout(function () { el.classList.remove('is-visible'); }, 5000);
   }
 
   /* ---------- Accordions (PDP + FAQ) ---------- */
@@ -133,36 +133,169 @@
   }
 
   /* ---------- Contact form (contact page) ---------- */
+//   function contactForm() {
+//     var form = $('.contact-form');
+//     if (!form) return;
+//     form.addEventListener('submit', function (e) {
+//       e.preventDefault();
+//       var ok = true;
+//       $all('[required]', form).forEach(function (field) {
+//         var wrap = field.closest('.form-field');
+//         var bad = !field.value.trim() ||
+//           (field.type === 'email' && !validEmail(field.value));
+//         if (wrap) wrap.classList.toggle('has-error', bad);
+//         if (bad) { ok = false; }
+//       });
+//       if (!ok) return;
+//       var note = $('.form-success', form.parentElement) || null;
+//       if (note) { note.textContent = 'Thank you — our client care team will reply within one working day.'; }
+//       form.reset();
+//       toast('Message sent');
+//     });
+//     $all('input, textarea, select', form).forEach(function (field) {
+//       field.addEventListener('input', function () {
+//         var wrap = field.closest('.form-field');
+//         if (wrap) wrap.classList.remove('has-error');
+//       });
+//     });
+//   }
+
+//   window.PLMWUI = {
+//     icon: icon, stars: stars, ratingHtml: ratingHtml,
+//     $: $, $all: $all,
+//     onScrollHeader: onScrollHeader,
+//     revealInit: revealInit,
+//     toast: toast,
+//     accordions: accordions,
+//     newsletterForms: newsletterForms,
+//     contactForm: contactForm,
+//     validEmail: validEmail
+//   };
+// })(window, document);
+
+
+  /* ---------- Contact form (contact page) ---------- */
+
   function contactForm() {
+
     var form = $('.contact-form');
+
     if (!form) return;
+
     form.addEventListener('submit', function (e) {
+
       e.preventDefault();
+
       var ok = true;
+
       $all('[required]', form).forEach(function (field) {
+
         var wrap = field.closest('.form-field');
+
         var bad = !field.value.trim() ||
           (field.type === 'email' && !validEmail(field.value));
-        if (wrap) wrap.classList.toggle('has-error', bad);
-        if (bad) { ok = false; }
+
+        if (wrap) {
+          wrap.classList.toggle('has-error', bad);
+        }
+
+        if (bad) {
+          ok = false;
+        }
+
       });
+
       if (!ok) return;
+
+
+      /* ---------- Get form values ---------- */
+
+      var name = $('#home-cf-name', form).value.trim();
+      var email = $('#home-cf-email', form).value.trim();
+      var topic = $('#home-cf-topic', form).value;
+      var message = $('#home-cf-msg', form).value.trim();
+
+
+      /* ---------- WhatsApp number ---------- */
+
+      /* Replace with your actual WhatsApp number */
+      var whatsappNumber = '917598695001';
+
+
+      /* ---------- Create WhatsApp message ---------- */
+
+      var whatsappMessage =
+        'Hello PL Mens Wear,\n\n' +
+        'I would like to get in touch with you.\n\n' +
+        'Name: ' + name + '\n' +
+        'Email: ' + email + '\n' +
+        'Topic: ' + topic + '\n\n' +
+        'Message:\n' +
+        message + '\n\n' +
+        'Thank you.';
+
+
+      /* ---------- Create WhatsApp URL ---------- */
+
+      var encodedMessage = encodeURIComponent(whatsappMessage);
+
+      var whatsappURL =
+        'https://wa.me/' +
+        whatsappNumber +
+        '?text=' +
+        encodedMessage;
+
+
+      /* ---------- Open WhatsApp ---------- */
+
+      window.open(whatsappURL, '_blank');
+
+
+      /* ---------- Success message ---------- */
+
       var note = $('.form-success', form.parentElement) || null;
-      if (note) { note.textContent = 'Thank you — our client care team will reply within one working day.'; }
+
+      if (note) {
+        note.textContent = 'Opening WhatsApp...';
+      }
+
       form.reset();
-      toast('Message sent');
+
+      toast('Opening WhatsApp');
+
     });
+
+
+    /* ---------- Remove validation errors while typing ---------- */
+
     $all('input, textarea, select', form).forEach(function (field) {
+
       field.addEventListener('input', function () {
+
         var wrap = field.closest('.form-field');
-        if (wrap) wrap.classList.remove('has-error');
+
+        if (wrap) {
+          wrap.classList.remove('has-error');
+        }
+
       });
+
     });
+
   }
 
+
+  /* ---------- Public API ---------- */
+
   window.PLMWUI = {
-    icon: icon, stars: stars, ratingHtml: ratingHtml,
-    $: $, $all: $all,
+
+    icon: icon,
+    stars: stars,
+    ratingHtml: ratingHtml,
+
+    $: $,
+    $all: $all,
+
     onScrollHeader: onScrollHeader,
     revealInit: revealInit,
     toast: toast,
@@ -170,5 +303,8 @@
     newsletterForms: newsletterForms,
     contactForm: contactForm,
     validEmail: validEmail
+
   };
+
+
 })(window, document);
