@@ -19,16 +19,26 @@
       content="Modern menswear designed for work, weekends, travel and everything in between."
     />
     <meta property="og:image" content="assets/images/hero-main.svg" />
+    <link rel="preload" as="image" href="assets/images/Final_Logo.webp" />
+    <link rel="preload" as="image" href="assets/images/Hero_poster.webp" fetchpriority="high" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" />
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    </noscript>
 
     <link rel="stylesheet" href="css/style.css" />
 
@@ -95,7 +105,7 @@
     </div>
 
     <!-- Background Music -->
-    <audio id="siteMusic" loop preload="auto">
+    <audio id="siteMusic" loop preload="none">
       <source
         src="assets/audio/Background Fashion Music - Commercial Luxury Chill Deep House - Royalty Free For Advertising.mp3"
         type="audio/mpeg"
@@ -180,10 +190,12 @@
                   <a class="mega__promo" href="#collections">
                     <!-- <img data-mega-promo-img src="assets/images/collections/collection-premium.svg" alt="The Premium Collection" loading="lazy"> -->
                     <video
-                      autoplay
                       muted
                       loop
-                      src="/assets/videos/Intro.mp4"
+                      playsinline
+                      preload="none"
+                      data-lazy-src="assets/videos/Intro.mp4"
+                      data-lazy-trigger="hover"
                     ></video>
                     <span class="mega__promo-overlay">
                       <!-- <span class="label">The Signature Collection</span> -->
@@ -201,7 +213,7 @@
         </nav>
 
         <div class="header-actions">
-          <a href="#contact">
+          <a href="#contact" aria-label="Contact us">
             <span class="icon-btn" aria-hidden="true" title="Contact">
               <svg
                 viewBox="0 0 24 24"
@@ -216,7 +228,7 @@
             </span>
           </a>
 
-          <a href="#locations">
+          <a href="#locations" aria-label="Our stores">
             <span class="icon-btn" aria-hidden="true">
               <svg
                 viewBox="0 0 24 24"
@@ -232,7 +244,7 @@
             </span>
           </a>
 
-          <a href="#collections">
+          <a href="#collections" aria-label="Shop collections">
             <span class="icon-btn" aria-hidden="true">
               <svg
                 viewBox="0 0 24 24"
@@ -346,7 +358,7 @@
             loop
             playsinline
             preload="metadata"
-            poster="/assets/images/Hero_poster.webp"
+            poster="assets/images/Hero_poster.webp"
           >
             <source src="./assets/videos/Hero_section.mp4" type="video/mp4" />
           </video>
@@ -594,14 +606,13 @@
             <a class="coll-card reveal reveal--img" href="#collections">
               <!-- <video src="assets/videos/shirt.mp4" alt="Shirts — tailored, relaxed and linen shirts" loading="lazy" width="1600" height="1100" autoplay muted loop></video> -->
               <video
-                src="assets/videos/shirts.mp4"
-                alt="T-Shirts &amp; Polos — fine knitwear and cotton tees"
-                loading="lazy"
+                data-lazy-src="assets/videos/shirts.mp4"
+                preload="none"
                 width="1600"
                 height="1100"
-                autoplay
                 muted
                 loop
+                playsinline
               ></video>
 
               <div class="coll-card__overlay">
@@ -619,14 +630,13 @@
               href="#collections"
             >
               <video
-                src="assets/videos/shoe.mp4"
-                alt="T-Shirts &amp; Polos — fine knitwear and cotton tees"
-                loading="lazy"
+                data-lazy-src="assets/videos/shoe.mp4"
+                preload="none"
                 width="1600"
                 height="1100"
-                autoplay
                 muted
                 loop
+                playsinline
               ></video>
 
               <div class="coll-card__overlay">
@@ -642,14 +652,13 @@
 
             <a class="coll-card reveal reveal--img" href="#collections">
               <video
-                src="assets/videos/pant.mp4"
-                alt="T-Shirts &amp; Polos — fine knitwear and cotton tees"
-                loading="lazy"
+                data-lazy-src="assets/videos/pant.mp4"
+                preload="none"
                 width="1600"
                 height="1100"
-                autoplay
                 muted
                 loop
+                playsinline
               ></video>
               <!-- <video src="assets/videos/pant.mp4" alt="Jeans — straight, slim and relaxed fits" loading="lazy" width="1600" height="1100" autoplay muted loop></video> -->
               <div class="coll-card__overlay">
@@ -1011,12 +1020,12 @@
           </div>
 
           <div class="social-links">
-            <a href="https://www.instagram.com/pl_mens_wear/" , target="_blank">
-              <i class="fa-brands fa-instagram"></i>
+            <a href="https://www.instagram.com/pl_mens_wear/" target="_blank" rel="noopener" aria-label="Instagram">
+              <i class="fa-brands fa-instagram" aria-hidden="true"></i>
             </a>
 
-            <a href="https://wa.me/916385779315" , target="_blank">
-              <i class="fa-brands fa-whatsapp"></i>
+            <a href="https://wa.me/916385779315" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+              <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
             </a>
 
             <a
