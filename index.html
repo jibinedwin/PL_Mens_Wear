@@ -422,10 +422,6 @@
           class="terrain"
           data-enable-animation="true"
           data-sticky-section="true"
-          style="
-            --terrain-scroll-height: 300svh;
-            --terrain-main-image-position: 50% 16%;
-          "
           aria-label="Shop every journey"
         >
           <div class="terrain__pin" data-terrain-pin>
@@ -451,7 +447,6 @@
                   href="#collections"
                   aria-label="Work"
                   data-terrain-card
-                  style="--terrain-image-position: 50% 16%"
                 >
                   <span class="terrain__label">
                     <b>Work</b>
@@ -478,7 +473,6 @@
                   href="#collections"
                   aria-label="Festive"
                   data-terrain-card
-                  style="--terrain-image-position: 50% 24%"
                 >
                   <span class="terrain__label">
                     <b>Festive</b>
@@ -502,7 +496,6 @@
                   href="#collections"
                   aria-label="Weekend"
                   data-terrain-card
-                  style="--terrain-image-position: 50% 30%"
                 >
                   <span class="terrain__label">
                     <b>Weekend</b>
@@ -526,7 +519,6 @@
                   href="#collections"
                   aria-label="Travel"
                   data-terrain-card
-                  style="--terrain-image-position: 50% 16%"
                 >
                   <span class="terrain__label">
                     <b>Travel</b>
@@ -550,7 +542,6 @@
                   href="#collections"
                   aria-label="Evening"
                   data-terrain-card
-                  style="--terrain-image-position: 50% 16%"
                 >
                   <span class="terrain__label">
                     <b>Evening</b>
@@ -704,7 +695,7 @@
                 weekend, a third for the airport. We build clothing that moves
                 effortlessly between those moments without missing a beat.
               </p>
-              <p class="lead" style="margin-top: 14px">
+              <p class="lead">
                 Every piece is wear-tested for months in real cities, real
                 commutes and real Indian summers before it earns a permanent
                 place in our line.
@@ -756,7 +747,7 @@
               <button class="store-tab-btn active" data-store="mumbai" role="tab" aria-selected="true">Mumbai Flagship</button>
             </div> -->
 
-              <!-- Store 1: Mumbai -->
+              <!-- Store 1: -->
               <article
                 id="store-mumbai"
                 class="store-info-card active"
@@ -791,7 +782,7 @@
                 * Note: Address represents the designated flagship demonstration salon. In-person styling appointments can be scheduled via the contact desk below.
               </p> -->
 
-                <div style="margin-top: 2rem; text-align: center">
+                <div class="store-info-card__actions">
                   <a
                     href="https://www.google.com/maps/place/Pl+menswear/@8.2973732,77.2013784,17z/data=!4m6!3m5!1s0x3b0455005c1b25c1:0xc3430d7d9d1d3e0b!8m2!3d8.2976545!4d77.2020677!16s%2Fg%2F11mybz4bks?entry=ttu&g_ep=EgoyMDI2MDkzMC4wIKXMDSoASAFQAw%3D%3D"
                     target="_blank"
@@ -883,14 +874,7 @@
                   ></textarea>
                   <p class="error-msg">Please write your message.</p>
                 </div>
-                <div
-                  style="
-                    display: block;
-                    text-align: center;
-                    gap: 18px;
-                    flex-wrap: wrap;
-                  "
-                >
+                <div class="contact-form__actions">
                   <button class="btn btn--solid" type="submit">
                     Send message
                   </button>

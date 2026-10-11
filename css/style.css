@@ -1106,6 +1106,9 @@ body.nav-locked {
   margin-bottom: 18px;
   text-align: center;
 }
+.about-grid__body .lead + .lead {
+  margin-top: 14px;
+}
 .stats-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1179,6 +1182,10 @@ body.nav-locked {
   flex-shrink: 0;
   margin-top: 2px;
 }
+.store-info-card__actions {
+  margin-top: 2rem;
+  text-align: center;
+}
 .map-wrapper {
   position: relative;
   border: 1px solid var(--border-subtle);
@@ -1238,6 +1245,12 @@ body.nav-locked {
 .contact-form {
   display: grid;
   gap: 18px;
+}
+.contact-form__actions {
+  display: block;
+  text-align: center;
+  gap: 18px;
+  flex-wrap: wrap;
 }
 .form-field label {
   display: block;
@@ -1498,6 +1511,8 @@ body.nav-locked {
   --terrain-ui-font: var(--sans);
   --terrain-color-foreground: var(--ink);
   --terrain-color-background: var(--ivory);
+  --terrain-scroll-height: 300svh;
+  --terrain-main-image-position: 50% 16%;
   --page-margin: clamp(20px, 4vw, 56px);
   display: block;
   width: 100%;
@@ -1553,6 +1568,17 @@ body.nav-locked {
   min-width: 0;
   flex-direction: column-reverse;
   color: inherit;
+  --terrain-image-position: 50% 16%;
+}
+.terrain__card:nth-child(2) {
+  --terrain-image-position: 50% 24%;
+}
+.terrain__card:nth-child(3) {
+  --terrain-image-position: 50% 30%;
+}
+.terrain__card:nth-child(4),
+.terrain__card:nth-child(5) {
+  --terrain-image-position: 50% 16%;
 }
 .terrain__card[data-featured="true"] {
   grid-column: 1 / -1;
